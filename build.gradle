@@ -1,0 +1,29 @@
+group 'com.example'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+// 公式ドキュメントより拝借 http://doma.readthedocs.org/ja/stable/build/#gradle
+// JavaクラスとSQLファイルの出力先ディレクトリを同じにする
+processResources.destinationDir = compileJava.destinationDir
+// コンパイルより前にSQLファイルを出力先ディレクトリにコピーするために依存関係を逆転する
+compileJava.dependsOn processResources
+
+dependencies {
+    providedCompile 'javax:javaee-web-api:7.0'
+    compile 'org.seasar.doma:doma:2.5.0'
+    compile 'org.postgresql:postgresql:9.4-1204-jdbc42'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}
