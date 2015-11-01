@@ -1,4 +1,4 @@
-package com.example;
+package com.example.jdbc;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -13,31 +13,33 @@ import java.util.List;
 /**
  * Created by tada on 2015/10/31.
  */
-@WebServlet("/test-ejb")
-public class TestEjbServlet extends HttpServlet {
+@WebServlet("/jdbc-ejb")
+public class JdbcEjbTestServlet extends HttpServlet {
 
     @Inject
-    private TestEjbService testEjbService;
+    private JdbcEjbTestDao jdbcEjbTestDao;
 
     private static final String COMMIT = "commit";
     private static final String ROLLBACK = "rollback";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        executeQuietly(() -> testEjbService.insertRequiresNewThrowNPE(
+        executeQuietly(() -> jdbcEjbTestDao.deleteAll());
+
+        executeQuietly(() -> jdbcEjbTestDao.insertRequiresNewThrowsNPE(
                 new TestEntity(1, "NPE", "{}", "{}", ROLLBACK)));
-        executeQuietly(() -> testEjbService.insertRequiresNewThrowIOE(
+        executeQuietly(() -> jdbcEjbTestDao.insertRequiresNewThrowsIOE(
                 new TestEntity(2, "IOE", "{}", "{}", COMMIT)));
-        executeQuietly(() -> testEjbService.insertRequiredThrowNPE(
+        executeQuietly(() -> jdbcEjbTestDao.insertRequiredThrowsNPE(
                 new TestEntity(3, "NPE", "{}", "{}", ROLLBACK)));
-        executeQuietly(() -> testEjbService.insertRequiredThrowIOE(
+        executeQuietly(() -> jdbcEjbTestDao.insertRequiredThrowsIOE(
                 new TestEntity(4, "IOE", "{}", "{}", COMMIT)));
 
-        List<TestEntity> list = testEjbService.selectAll();
+        List<TestEntity> list = jdbcEjbTestDao.findAll();
         int countActual = list.size();
         int countExpected = 2;
         boolean allCommited = list.stream()
-                .map(t -> t.expected)
+                .map(t -> t.getExpected())
                 .allMatch(e -> e.equals(COMMIT));
 
         PrintWriter out = resp.getWriter();

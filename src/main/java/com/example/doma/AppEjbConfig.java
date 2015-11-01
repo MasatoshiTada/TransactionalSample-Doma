@@ -1,4 +1,4 @@
-package com.example;
+package com.example.doma;
 
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.dialect.Dialect;
@@ -12,8 +12,8 @@ import javax.sql.DataSource;
 /**
  * Created by tada on 2015/10/31.
  */
-@Singleton
-//@ApplicationScoped
+//@Singleton
+@ApplicationScoped
 public class AppEjbConfig implements Config {
 
     @Resource(lookup = "jdbc/sandbox")

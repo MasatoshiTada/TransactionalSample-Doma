@@ -1,4 +1,4 @@
-package com.example;
+package com.example.doma;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;

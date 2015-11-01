@@ -1,4 +1,4 @@
-package com.example;
+package com.example.doma;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by tada on 2015/10/31.
  */
-@WebServlet("/test-cdi-requires-new")
+@WebServlet("/doma-cdi-requires-new")
 public class TestCdiRequiresNewServlet extends HttpServlet {
 
     @Inject
@@ -24,6 +24,7 @@ public class TestCdiRequiresNewServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        executeQuietly(() -> testCdiRequiresNewService.deleteAll());
 
         executeQuietly(() -> testCdiRequiresNewService.insert01RollbackOnNoDontRollbackonNoThrowsNPE(
                 new TestEntity(1, "NPE", "{}", "{}", ROLLBACK)));

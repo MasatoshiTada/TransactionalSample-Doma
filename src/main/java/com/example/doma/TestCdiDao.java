@@ -1,8 +1,7 @@
-package com.example;
+package com.example.doma;
 
 import org.seasar.doma.*;
 
-import javax.ejb.Stateless;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.List;
@@ -25,4 +24,7 @@ public interface TestCdiDao {
 
     @Insert
     int insert(TestEntity testEntity);
+
+//    @BatchDelete(sqlFile = true)
+//    int[] batchDelete();
 }

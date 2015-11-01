@@ -1,4 +1,4 @@
-package com.example;
+package com.example.doma;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -18,6 +18,11 @@ public class TestEjbService {
     public List<TestEntity> selectAll() {
         return testEjbDao.selectAll();
     }
+
+//    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+//    public void deleteAll() {
+//        testEjbDao.batchDelete();
+//    }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void insertRequiresNewThrowNPE(TestEntity testEntity) throws Exception {

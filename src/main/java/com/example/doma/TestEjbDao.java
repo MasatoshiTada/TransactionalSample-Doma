@@ -1,4 +1,4 @@
-package com.example;
+package com.example.doma;
 
 import org.seasar.doma.*;
 
@@ -24,4 +24,7 @@ public interface TestEjbDao {
 
     @Insert
     int insert(TestEntity testEntity);
+
+//    @BatchDelete(sqlFile = true)
+//    int[] batchDelete();
 }
