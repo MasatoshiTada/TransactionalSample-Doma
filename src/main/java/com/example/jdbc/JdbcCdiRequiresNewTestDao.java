@@ -53,9 +53,15 @@ public class JdbcCdiRequiresNewTestDao implements Serializable {
         }
     }
 
+    private Connection getNonAutoCommitConnection() throws Exception {
+        Connection con = dataSource.getConnection();
+        con.setAutoCommit(false);
+        return con;
+    }
+
     private int insert(TestEntity testEntity) throws Exception {
         String sql = "INSERT INTO test_entity(id, thrown, rollbackon, dontrollbackon, expected) VALUES(?, ?, ?, ?, ?)";
-        try (Connection con = dataSource.getConnection();
+        try (Connection con = this.getNonAutoCommitConnection();
                PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, testEntity.getId());
             ps.setString(2, testEntity.getThrown());

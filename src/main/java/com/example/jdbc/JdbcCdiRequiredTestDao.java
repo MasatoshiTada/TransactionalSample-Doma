@@ -2,6 +2,7 @@ package com.example.jdbc;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.Dependent;
+import javax.enterprise.context.RequestScoped;
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -16,7 +17,8 @@ import java.util.List;
  *
  * @author tada
  */
-@Dependent
+//@Dependent
+@RequestScoped
 public class JdbcCdiRequiredTestDao implements Serializable {
 
     @Resource(lookup = "jdbc/sandbox")
@@ -53,9 +55,15 @@ public class JdbcCdiRequiredTestDao implements Serializable {
         }
     }
 
+    private Connection getNonAutoCommitConnection() throws Exception {
+        Connection con = dataSource.getConnection();
+        con.setAutoCommit(false);
+        return con;
+    }
+
     private int insert(TestEntity testEntity) throws Exception {
         String sql = "INSERT INTO test_entity(id, thrown, rollbackon, dontrollbackon, expected) VALUES(?, ?, ?, ?, ?)";
-        try (Connection con = dataSource.getConnection();
+        try (Connection con = this.getNonAutoCommitConnection();
                PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, testEntity.getId());
             ps.setString(2, testEntity.getThrown());
